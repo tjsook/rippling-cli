@@ -3,6 +3,7 @@ from typing import Union
 
 import click
 
+from rippling_cli.cli.commands.api.api import api
 from rippling_cli.cli.commands.flux.flux import flux
 from rippling_cli.cli.commands.login import login
 from rippling_cli.cli.commands.logout import logout
@@ -38,7 +39,8 @@ def cli(ctx):
 COMMANDS_LIST: list[Union[click.Command, click.Group]] = [
     login,
     logout,
-    flux
+    flux,
+    api
 ]
 
 
