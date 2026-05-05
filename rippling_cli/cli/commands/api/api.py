@@ -58,7 +58,7 @@ def get(ctx: click.Context, endpoint: str, params: tuple):
         key, _, value = param.partition("=")
         query_params[key] = value
 
-    response = api_client.get(endpoint, params=query_params if query_params else None)
+    response = api_client.get(endpoint, params=query_params)
 
     if response.status_code == HTTPStatus.NO_CONTENT:
         click.echo("(no content)")
@@ -69,7 +69,7 @@ def get(ctx: click.Context, endpoint: str, params: tuple):
     except ValueError:
         click.echo(response.text)
 
-    if response.status_code not in (HTTPStatus.OK, HTTPStatus.CREATED, HTTPStatus.ACCEPTED):
+    if response.status_code not in (HTTPStatus.OK, HTTPStatus.CREATED, HTTPStatus.ACCEPTED, HTTPStatus.NO_CONTENT):
         raise SystemExit(1)
 
 
@@ -108,7 +108,7 @@ def put(ctx: click.Context, endpoint: str, data: str, file_path: str):
 
     payload = None
     if file_path:
-        with open(file_path, "r") as fh:
+        with open(file_path, "r", encoding="utf-8") as fh:
             try:
                 payload = json.load(fh)
             except json.JSONDecodeError as exc:
